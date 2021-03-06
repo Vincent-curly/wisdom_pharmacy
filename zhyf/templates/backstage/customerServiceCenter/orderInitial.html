@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单初始化</title>
+    <link rel="stylesheet" href="{% static 'css/backstage/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mall/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'layui/css/layui.css' %}">
+    <link href="{% static 'fonts/backstage/iconfont.css' %}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="padding_10">
+    <div class="layui-row">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div class="form-box">
+                    <div class="layui-form layui-form-item">
+                        <div class="layui-inline">
+                            <div class="layui-form-mid">机构:</div>
+                            <div class="layui-input-inline" style="width: 250px">
+                                <select name="sourceId" id="sourceId">
+                                    <option value="">请选择</option>
+                                </select>
+                            </div>
+                            <div class="layui-form-mid">搜索:</div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="keyWords" id="keyWords"  placeholder="输入订单号/姓名" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid">开始时间:</div>
+                            <div class="layui-input-inline" style="width: 160px">
+                                <input type="text" class="layui-input test-laydate-item" name="startDate" id="startDate">
+                            </div>
+                            <div class="layui-form-mid">结束时间</div>
+                            <div class="layui-input-inline" style="width: 160px">
+                                <input type="text" name="endDate" id="endDate" class="layui-input test-laydate-item">
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn layuiadmin-btn-admin" lay-submit
+                                        lay-filter="LAY-order-back-search">
+                                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table id="LAY-orderInitial-back-manage" lay-filter="LAY-orderInitial-back-manage"></table>
+                {% verbatim %}
+                <script type="text/html" id="table-orderInitial">
+                    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="initial" style="text-decoration: none">
+                        <i class="iconfont icon-beianchushihuamima"></i>初始化状态</a>
+                </script>
+                <script id="orderStatusTpl" type="text/html">
+                    {{d.order_status == 0 ? '<span style="color: lightseagreen;">录入中</span>':
+                    d.order_status == 5 ? '<span style="color: blue;">审核中</span>' :
+                    d.order_status == 10 ? '<span style="color: green;">用户确认中</span>':
+                    d.order_status == 15 ? '<span style="color: orange;">调剂中</span>':
+                    d.order_status == 17 ? '<span style="color: turquoise;">备药完成</span>':
+                    d.order_status == 18 ? '<span style="color: coral;">打包完成</span>':
+                    d.order_status == 20 ? '<span style="color: royalblue;">物流分拨</span>':
+                    d.order_status == 25 ? '<span style="color: black;">派送完毕</span>':
+                    d.order_status == 97 ? '<span style="color: red;">用户拒收</span>':
+                    d.order_status == 98 ? '<span style="color: firebrick;">审核失败</span>':
+                    d.order_status == 99 ? '<span style="color: tomato;">用户放弃</span>':
+                    ''}}
+                </script>
+                <script id="isHosAddrTpl" type="text/html">
+                    {{ d.is_hos_addr == 0 ? '否' : '是'}}
+                </script>
+                {% endverbatim %}
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'layui/layui.js' %}"></script>
+<script src="{% static 'js/backstage/jquery-1.12.3.min.js' %}"></script>
+<script>
+    //JavaScript代码区域
+
+    layui.use(['element', 'form', 'table', 'laydate', 'layer'], function () {
+        var $ = layui.jquery;
+        var element = layui.element;
+        var form = layui.form;
+        window.table = layui.table;
+        var layer = layui.layer;
+        var laydate = layui.laydate;
+
+        //请求后台机构信息，渲染select
+        $.get("{% url 'management:prescriptionQuery' type='sourceId' %}", {}, function (data) {
+            var list = JSON.parse(data);
+            if (list != null || list.size() > 0) {
+                for (var i = 0; i < list.length; i++) {
+                    $("#sourceId").append("<option value=" + list[i].pk + ">" + list[i].fields.company_name + "</option>");
+                }
+            }
+            form.render('select');
+        });
+
+        //时间段
+        lay('.test-laydate-item').each(function () {
+            laydate.render({
+                elem: this
+                , trigger: 'click'
+                , type: 'datetime'
+            });
+        });
+
+
+        //请求用户表信息，渲染
+        table.render({
+            elem: '#LAY-orderInitial-back-manage'
+            , url: '{% url 'management:tableData' type='orderInitial_table' %}'
+            , page: true
+            {#,height: 'full-100'#}
+            , limit: 10
+            , limits: [10, 15, 20]
+            , cols: [[
+                {field: 'order_id', title: '订单号',width:150, align: 'center'}
+                , {field: 'addr_str', title: '收货地址',width:200, align: 'center'}
+                , {field: 'source_id', title: '订单来源', align: 'center',width:230}
+                , {field: 'user_name', title: '客户姓名',width:90, align: 'center'}
+                , {field: 'order_status', title: '订单状态',width:90, align: 'center',templet:'#orderStatusTpl'}
+                , {field: 'order_time', title: '开单时间',width:160, align: 'center'}
+                , {field: 'send_goods_time', title: '送货时间',width:160, align: 'center'}
+                , {field: 'prescri_id', title: '处方号',width:150, align: 'center'}
+                , {field: 'is_hos_addr', title: '送医院',width:80,align: 'center',templet:'#isHosAddrTpl'}
+                , {fixed: 'right', title: '操作', align: 'center',width:120, toolbar: '#table-orderInitial'}
+            ]]
+        });
+
+        //监听搜索
+        form.on('submit(LAY-order-back-search)', function (data) {
+            var field = data.field;
+            {#console.log(field);#}
+            //执行重载
+            table.reload('LAY-orderInitial-back-manage', {
+                where: {
+                    sourceId:field.sourceId,
+                    keyWords:field.keyWords,
+                    startDate: field.startDate,
+                    endDate: field.endDate,
+                },
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
+        });
+
+        //监听单元格事件
+        table.on('tool(LAY-orderInitial-back-manage)', function (obj) {
+            var data = obj.data;
+            {#console.log(data);#}
+            var orderId = data.order_id;
+            if (obj.event === 'initial'){
+                layer.open({
+                    type: 2
+                    , title: '初始化订单状态'
+                    , content: '{% url 'management:orderInitial' type='initialStatus' %}' + '?order_id=' + orderId
+                    , area: ["420px", "200px"]
+                    , btn: ["确定", "取消"]
+                    , btnAlign: 'c'
+                    , yes: function (index) {
+                        $.get("{% url 'management:orderInitial' type='initial' %}", {orderId:orderId}, function (data) {
+                            if (data.status === 'success'){
+                                table.reload('LAY-orderInitial-back-manage');
+                                layer.msg('订单:' + orderId + '初始化成功！')
+                            }else {
+                                alert("订单:" + orderId + "初始化成功！\n原因：" + data.message)
+                            }
+                        });
+                        setTimeout(function () {
+                            layer.close(index);     //关闭弹层
+                        }, 600);
+                    }
+                })
+            }
+        });
+
+    })
+
+
+</script>
+</body>
+</html>

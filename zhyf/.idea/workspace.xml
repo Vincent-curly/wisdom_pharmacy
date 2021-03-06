@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0a4bca4e-1384-49e6-992f-8bc03d6c5ba6" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/management/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/management/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/management/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/relies/authorityControl.py" beforeDir="false" afterPath="$PROJECT_DIR$/relies/authorityControl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/relies/processing.py" beforeDir="false" afterPath="$PROJECT_DIR$/relies/processing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/uploads/herbsimportZY.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/static/import_templates/herbsimportZY.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/uploads/中药目录.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/uploads/中药目录.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/adjustCenter/prescription_adjust.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/adjustCenter/prescription_adjust.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/adjustCenter/print_model.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/adjustCenter/print_model.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/customerServiceCenter/audit_prescription_info.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/customerServiceCenter/audit_prescription_info.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/customerServiceCenter/orderAudit.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/customerServiceCenter/orderAudit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/customerServiceCenter/orderInitial.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/customerServiceCenter/orderInitial.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/customerServiceCenter/prescriptionQuery.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/customerServiceCenter/prescriptionQuery.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/goods/BatchImportGoods.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/goods/BatchImportGoods.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/goods/goods_manage.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/goods/goods_manage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/systemManage/company/add_company.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/systemManage/company/add_company.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/systemManage/company/company_manage.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/systemManage/company/company_manage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/systemManage/company/edit_company.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/systemManage/company/edit_company.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/systemManage/decoctionCenter/decoction_center_manage.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/systemManage/decoctionCenter/decoction_center_manage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/systemManage/menu/menu_add.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/systemManage/menu/menu_add.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/systemManage/menu/menu_manage.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/systemManage/menu/menu_manage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/systemManage/user/role_authorize.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/systemManage/user/role_authorize.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/systemManage/user/role_manage.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/systemManage/user/role_manage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/systemManage/user/user_manage.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backstage/systemManage/user/user_manage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zhyf/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/zhyf/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zhyf/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/zhyf/wsgi.py" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="zyf@localhost" type="feb32156:DbDataSourceImpl" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="1ndpXznVirJYuWpfD7bTWcSnHb3" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.splitter.proportion" value="0.28241563" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/templates/backstage/systemManage/menu" />
+      <recent name="$PROJECT_DIR$/static/fonts" />
+      <recent name="$PROJECT_DIR$/static" />
+      <recent name="$PROJECT_DIR$/templates" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/static/import_templates" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Django server.zhyf">
+    <configuration name="prescription_audit" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="zhyf" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/relies" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/relies/prescription_audit.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="zhyf" type="Python.DjangoServer" factoryName="Django server">
+      <module name="zhyf" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="zhyf.settings" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.prescription_audit" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="allServicesViewState">
+      <serviceView>
+        <treeState>
+          <expand>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@8e16446c" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@8e16446c" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@21986071" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+          </expand>
+          <select />
+        </treeState>
+      </serviceView>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0a4bca4e-1384-49e6-992f-8bc03d6c5ba6" name="Default Changelist" comment="" />
+      <created>1611729866349</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1611729866349</updated>
+      <workItem from="1611729870500" duration="2700000" />
+      <workItem from="1611733066889" duration="3352000" />
+      <workItem from="1611737481375" duration="1942000" />
+      <workItem from="1611742512394" duration="1106000" />
+      <workItem from="1611758355319" duration="645000" />
+      <workItem from="1611822691626" duration="11959000" />
+      <workItem from="1611864900281" duration="2845000" />
+      <workItem from="1611902213604" duration="846000" />
+      <workItem from="1612009536285" duration="2660000" />
+      <workItem from="1612190135464" duration="23000" />
+      <workItem from="1613476965622" duration="11273000" />
+      <workItem from="1613489736469" duration="2648000" />
+      <workItem from="1613552753122" duration="1393000" />
+      <workItem from="1613626313236" duration="2061000" />
+      <workItem from="1613718881083" duration="218000" />
+      <workItem from="1613746101653" duration="667000" />
+      <workItem from="1613754568068" duration="1663000" />
+      <workItem from="1613802091257" duration="6291000" />
+      <workItem from="1614011754496" duration="667000" />
+      <workItem from="1614053296313" duration="32428000" />
+      <workItem from="1614149856811" duration="21932000" />
+      <workItem from="1614226611278" duration="17108000" />
+      <workItem from="1614592298175" duration="4046000" />
+      <workItem from="1614650745344" duration="1163000" />
+      <workItem from="1614668151972" duration="2984000" />
+      <workItem from="1614858888471" duration="1085000" />
+      <workItem from="1614871614178" duration="3084000" />
+      <workItem from="1614943846014" duration="44000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="requirements.txt" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/zhyf$prescription_audit.coverage" NAME="prescription_audit Coverage Results" MODIFIED="1614236134708" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/relies" />
+  </component>
+</project>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>处方详情信息</title>
+    <link rel="stylesheet" href="{% static 'css/backstage/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mall/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'layui/css/layui.css' %}">
+    <link href="{% static 'fonts/backstage/iconfont.css' %}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="padding_10">
+    <div class="layui-tab layui-tab-card" lay-filter="prescription_tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this nav-active" lay-id="presInfo">处方信息</li>
+            <li class="nav-active" lay-id="presImage">处方照片</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-card">
+                    <div class="layui-collapse" lay-accordion="">
+                        <div class="layui-colla-item">
+                        <input type="hidden" name="prescriptionNum" value="{{ pres_info.prescri_id }}" id="prescriptionNum"/>
+                            <h2 class="layui-colla-title">{{ pres_info.prescri_id }}</h2>
+                            <div class="layui-colla-content layui-show">
+                                <table class="layui-table details_table1" width="100%" border="0" cellpadding="0"
+                                       cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="6" style="text-align: center">患者信息</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="layui-form" lay-filter="prescription">
+                                    <tr>
+                                        <td width="10%">姓名</td>
+                                        <td width="10%">{{ pres_info.user_name }}</td>
+                                        <td width="10%">年龄</td>
+                                        <td width="10%">{{ pres_info.age }}</td>
+                                        <td width="10%">性别</td>
+                                        {% if pres_info.gender == 0 %}
+                                            <td width="10%">女</td>
+                                            {% elif pres_info.gender == 1 %}
+                                            <td width="10%">男</td>
+                                            {% else %}
+                                            <td width="10%">未知</td>
+                                        {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <td width="10%">孕妇</td>
+                                        {% if pres_info.is_pregnant == 0 %}
+                                            <td width="10%">否</td>
+                                            {% else %}
+                                            <td width="10%">是</td>
+                                        {% endif %}
+                                        <td width="10%">电话</td>
+                                        <td width="10%">{{ pres_info.tel }}</td>
+                                        <td width="10%">发票抬头</td>
+                                        <td width="10%"></td>
+                                    </tr>
+                                    <thead>
+                                    <tr>
+                                        <th colspan="6" style="text-align: center">医生信息</th>
+                                    </tr>
+                                    </thead>
+                                    <tr>
+                                        <td width="10%">医生</td>
+                                        <td width="10%">{{ pres_info.doctor }}</td>
+                                        <td width="10%">电话</td>
+                                        <td width="10%"></td>
+                                        <td width="10%">医院科室</td>
+                                        {% if pres_info.hos_depart %}
+                                            <td width="10%">{{ pres_info.hos_depart }}</td>
+                                            {% else %}
+                                            <td width="10%"></td>
+                                        {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <td width="10%">病区号</td>
+                                    {% if pres_info.disease_code %}
+                                        <td width="10%">{{ pres_info.disease_code }}</td>
+                                        {% else %}
+                                        <td width="10%"></td>
+                                    {% endif %}
+                                        <td width="10%">床位号</td>
+                                    {% if pres_info.bed_num %}
+                                        <td width="10%">{{ pres_info.bed_num }}</td>
+                                        {% else %}
+                                        <td width="10%"></td>
+                                    {% endif %}
+                                        <td width="10%">是否煎煮</td>
+                                        {% if pres_info.is_suffering == 1 %}
+                                            <td width="10%">是</td>
+                                            {% else %}
+                                            <td width="10%">否</td>
+                                        {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <td width="10%">处方类型</td>
+                                        {% if pres_info.prescri_type == 0 %}
+                                            <td width="10%">中药</td>
+                                            {% elif pres_info.prescri_type == 1 %}
+                                            <td width="10%">西药</td>
+                                            {% elif pres_info.prescri_type == 2 %}
+                                            <td width="10%">膏方</td>
+                                            {% elif pres_info.prescri_type == 3 %}
+                                            <td width="10%">免煎颗粒</td>
+                                        {% endif %}
+                                        <td width="10%">每剂打包数</td>
+                                        <td width="10%">{{ pres_info.per_pack_num }}</td>
+                                        <td width="10%">打包剂量</td>
+                                        <td width="10%">{{ pres_info.per_pack_dose }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10%">备注</td>
+                                        {% if pres_info.prescript_remark %}
+                                            <td width="10%" colspan="2">{{ pres_info.prescript_remark }}</td>
+                                            {% else %}
+                                            <td width="10%" colspan="2"></td>
+                                        {% endif %}
+                                        <td width="10%">诊断</td>
+                                    {% if pres_info.special_instru %}
+                                        <td width="10%" colspan="2">{{ pres_info.special_instru }}</td>
+                                        {% else %}
+                                        <td width="10%" colspan="2"></td>
+                                    {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <td width="10%">使用方法</td>
+                                        {% if pres_info.is_within == 0 %}
+                                            <td width="10%" colspan="2">内服</td>
+                                            {% else %}
+                                            <td width="10%" colspan="2">外用</td>
+                                        {% endif %}
+                                        <td width="10%">用药方法</td>
+                                    {% if pres_info.medication_methods %}
+                                        <td width="10%" colspan="2">{{ pres_info.medication_methods }}</td>
+                                        {% else %}
+                                        <td width="10%" colspan="2"></td>
+                                    {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <td width="10%">用药指导</td>
+                                        {% if pres_info.medication_instruction %}
+                                            <td width="10%" colspan="2">{{ pres_info.medication_instruction }}</td>
+                                            {% else %}
+                                            <td width="10%" colspan="2"></td>
+                                        {% endif %}
+                                        <td width="10%"></td>
+                                        <td width="10%" colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="6" style="text-align: center">药材清单</th>
+                                    </tr>
+                                    <table id="LAY-drugs-back-manage" lay-filter="LAY-drugs-back-manage"></table>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="6">
+                                            <div class="black f16 text-right">药&nbsp;&nbsp;&nbsp;&nbsp;费: <span id="drugsPrice"></span> 元&nbsp;&nbsp;&nbsp;&nbsp;<span id="amountPrice"></span> 元/剂&nbsp;&nbsp;&nbsp;&nbsp;<span id="spanAmount">剂&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数: {{ pres_info.amount }}</span></div>
+                                            <div class="black f16 text-right">煎煮费:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ suffering_price }} 元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ suffering_unit_price }}  元/袋&nbsp;&nbsp;&nbsp;&nbsp;<span id="spanSufferingNum">代煎袋数: {{ pres_info.suffering_num }}</span> </div>
+                                            <div class="black f16 text-right">处方金额总计:<strong class="red f18"><span id="orderMoney"></span></strong>元</div>
+                                            <input type="hidden" name="sufferingPrice" id="sufferingPrice" value="{{ suffering_price }}"/>
+                                            <input type="hidden" name="amount" id="amount" value="{{ pres_info.amount }}"/>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">处方照片</div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'layui/layui.js' %}"></script>
+<script src="{% static 'js/backstage/jquery-1.12.3.min.js' %}"></script>
+<script src="{% static 'js/backstage/decimal.min.js' %}"></script>
+<script>
+    //JavaScript代码区域
+
+    layui.use(['element', 'form', 'table', 'laydate', 'layer'], function () {
+        var $ = layui.jquery;
+        var element = layui.element;
+        var form = layui.form;
+        window.table = layui.table;
+        var layer = layui.layer;
+        var laydate = layui.laydate;
+
+        element.render();
+        var prescri_id = $("#prescriptionNum").val();
+        {#console.log(prescri_id);#}
+
+        //请求处方药材信息，渲染
+        table.render({
+            elem: '#LAY-drugs-back-manage'
+            , url: '{% url 'management:tableData' type='drugs_table' %}' + '?prescri_id=' + prescri_id
+            , page: false
+            , limit: Number.MAX_VALUE // 数据表格默认全部显示
+            , cols: [[
+                {type:'numbers'}
+                ,{field: 'goods_num', title: '机构编码',width:150, align: 'center'}
+                , {field: 'medicines', title: '药品名称',width:150, align: 'center'}
+                , {field: 'dose', title: '剂量',width:90, align: 'center'}
+                , {field: 'unit', title: '单位',width:90, align: 'center'}
+                , {field: 'm_usage', title: '用法',width:100, align: 'center'}
+                , {field: 'remark', title: '备注',width:200, align: 'center'}
+                , {field: 'unit_price', title: '单价', align: 'center',width:120}
+                , {field: 'unit_sum', title: '总计', align: 'center'}
+            ]]
+            ,done: function(res, curr, count){
+                {#console.log(res);#}
+                {#console.log(curr);          //得到当前页码#}
+                {#console.log(count);         //得到数据总量#}
+                var sum = 0;
+                for (var i=0;i<count;i++){
+                    sum += res.data[i].unit_sum;
+                }
+                $("#amountPrice").text(sum.toFixed(2));
+                var drugs_price = sum.toFixed(2)*$("#amount").val();
+                {#console.log(drugs_price);#}
+                $("#drugsPrice").text(drugs_price.toFixed(2));
+                var orderPrice = Number($("#sufferingPrice").val()) + Number(drugs_price.toFixed(2));
+                {#console.log(orderPrice);#}
+                $("#orderMoney").text(orderPrice.toFixed(2));
+            }
+        });
+    });
+
+
+</script>
+</body>
+</html>

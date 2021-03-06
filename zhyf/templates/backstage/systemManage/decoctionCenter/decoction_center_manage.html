@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>煎煮中心管理</title>
+    <link rel="stylesheet" href="{% static 'css/backstage/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mall/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'layui/css/layui.css' %}">
+    <link href="{% static 'fonts/backstage/iconfont.css' %}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="padding_10">
+    <div class="head-title clearfix">
+        <h1>煎煮中心管理</h1>
+    </div>
+    <div class="layui-row">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div class="form-box">
+                    <div class="layui-form layui-form-item">
+                        <div class="layui-inline">
+                            <div class="layui-form-mid">搜索:</div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="keywords" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn layuiadmin-btn-admin" lay-submit
+                                        lay-filter="LAY-center-back-search">
+                                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                                </button>
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn layuiadmin-btn-admin" data-type="add">
+                                    <i class="iconfont icon-tianjia"></i>&nbsp;新增
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table id="LAY-center-back-manage" lay-filter="LAY-center-back-manage"></table>
+                <script id="switchTpl" type="text/html">
+                    {% verbatim %}
+                    <input type="checkbox" name="state" value="{{ d.status }}" lay-skin="switch"
+                           lay-text="启用|停用" lay-filter="switchStatus" {{ d.status== 1 ? 'checked' : '' }}>
+                    {% endverbatim %}
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'layui/layui.js' %}"></script>
+<script src="{% static 'js/backstage/jquery-1.12.3.min.js' %}"></script>
+<script>
+    //JavaScript代码区域
+
+    layui.use(['element', 'form', 'table', 'laydate', 'layer'], function () {
+        var $ = layui.jquery;
+        var element = layui.element;
+        var form = layui.form;
+        window.table = layui.table;
+        var layer = layui.layer;
+
+        //请求用户表信息，渲染
+        table.render({
+            elem: '#LAY-center-back-manage'
+            , url: '{% url 'management:tableData' type='center_table' %}'
+            , cellMinWidth: 60 //全局定义常规单元格的最小宽度
+            , page: true
+            , limit: 10
+            , limits: [10, 15, 20]
+            , cols: [[
+                {field: 'code', title: '编号', align: 'center'}
+                , {field: 'name', title: '煎煮中心名称', width: 150, align: 'center'}
+                , {field: 'note', title: '备注', align: 'center'}
+                , {field: 'province', title: '省份', align: 'center'}
+                , {field: 'city', title: '城市', align: 'center'}
+                , {field: 'zone', title: '区县', align: 'center'}
+                , {field: 'address', title: '详细地址', align: 'center'}
+                , {field: 'register_time', title: '注册时间', align: 'center'}
+                , {field: 'status', title: '是否停用', templet: "#switchTpl"}
+            ]]
+        });
+
+        //事件
+        var active = {
+            add: function () {
+                layer.open({
+                    type: 2
+                    , title: '新增煎煮中心'
+                    , content: '{% url 'management:decoctionCenterManage' type='add' %}'
+                    , area: ['800px', '340px']
+                    , btn: ['提交', '关闭']
+                    , btnAlign: 'c'
+                    , success: function (layero, index) {
+                        var body = layer.getChildFrame('body', index);              //得到iframe页的body内容
+                        {#console.log(body.html());                                   //得到iframe页的body内容#}
+                        {#body.find('input').val('Hi，我是从父页来的');                //设置子页面表单值#}
+                    }
+                    , yes: function (index) {
+                        var iframe = window['layui-layer-iframe' + index];
+                        var formdata=iframe.datacallback();
+                        {#console.log(formdata);#}
+                        if (formdata){
+                            $.ajax({
+                                url: "{% url 'management:decoctionCenterManage' type='add' %}",
+                                data: formdata,
+                                dataType: "TEXT",
+                                type: "POST",
+                                csrfmiddlewaretoken: '{{ csrf_token  }}',
+                                success: function (res) {
+                                    var msg = eval("(" + res + ")");        //坑！必须转换成json对象后才能判断status
+                                    if (msg.status === 'success') {
+                                        table.reload('LAY-center-back-manage'); //数据刷新，静态更新表格中的数据
+                                        alert("【" + formdata['name'] + "】添加成功！")
+                                    } else {
+                                        alert("【" + formdata['name'] + "】 添加失败！\n原因：" + msg.message)
+                                    }
+                                    setTimeout(function () {
+                                        layer.close(index);     //关闭弹层
+                                    }, 600);
+                                }
+                            });
+                        }
+
+                    }
+                });
+            }
+        };
+
+
+        //监听搜索
+        form.on('submit(LAY-center-back-search)', function (data) {
+            var field = data.field;
+            {#console.log(field);#}
+            //执行重载
+            table.reload('LAY-center-back-manage', {
+                where: {
+                    key_words: field.keywords,
+                },
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
+        });
+
+        //监听switch
+        form.on('switch(switchStatus)', function (obj) {
+            {#console.log(obj.elem);   //得到 checkbox 原始 DOM 对象#}
+            {#console.log(obj.elem.checked);           //开关是否开启，true 或者 false#}
+            {#console.log(obj.othis);           //得到美化后的 DOM 对象#}
+            var x = obj.elem.checked;
+            var status = obj.value;             //开关value值，也可以通过 data.elem.value 得到
+            var code = obj.othis.parents('tr').find("td :first").text();       //查找当前行的goods_code信息
+            {#console.log(code);#}
+            var formdata = {goods_code: code, status: status};
+            var content = '';
+            if (status > 0) {
+                content += '确定停用该煎煮中心吗';
+            } else {
+                content += '确定启用该煎煮中心吗';
+            }
+            {#console.log(formdata);#}
+            layer.open({
+                content: content
+                , btn: ['确定', '取消']
+                , yes: function (index, layero) {
+                    obj.elem.checked = x;
+                    $.get("{% url 'management:decoctionCenterManage' type='updateStatus' %}", {Code:code,status:status}, function (data) {
+                        {#console.log(data);#}
+                        {#console.log(typeof data);#}
+                        {#console.log(data.status);#}
+                    });
+                    form.render();
+                    layer.close(index);
+                }
+                , btn2: function (index, layero) {
+                    obj.elem.checked = !x;
+                    form.render();
+                    //return false  开启这行代码可禁止点击该按钮关闭
+                }
+                , cancel: function () {
+                    //右上角关闭回调
+                    obj.elem.checked = !x;
+                    form.render();
+                    //return false  开启这行代码可禁止点击该按钮关闭
+                }
+            });
+            return false;
+        });
+
+        $('.layui-btn.layuiadmin-btn-admin').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    })
+
+
+</script>
+</body>
+</html>

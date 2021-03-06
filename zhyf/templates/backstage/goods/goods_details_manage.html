@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品详情管理</title>
+    <link rel="stylesheet" href="{% static 'css/backstage/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mall/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'layui/css/layui.css' %}">
+    <link href="{% static 'fonts/backstage/iconfont.css' %}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="padding_10">
+    <div class="head-title clearfix">
+        <h1>商品详情管理</h1>
+    </div>
+    <div class="layui-row">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div class="form-box">
+                    <div class="layui-form layui-form-item">
+                        <div class="layui-inline">
+                            <div class="layui-form-mid">搜索:</div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="keywords" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid">商品编码:</div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="goodscode" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn layuiadmin-btn-admin" lay-submit
+                                        lay-filter="LAY-goodsDetails-back-search">
+                                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                                </button>
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn layuiadmin-btn-admin nav-active"
+                                        data-url="{% url 'management:goodsDetailsManage' type='addGoodsDetails' %}" data-id="add_goods_details"
+                                        data-title="添加商品详情">
+                                    <i class="iconfont icon-tianjia"></i>&nbsp;添加商品详情
+                                </button>
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn layuiadmin-btn-admin nav-active"
+                                        data-url="{% url 'management:goodsDetailsManage' type='detailBatchImport' %}" data-id="detailBatchImport"
+                                        data-title="商品详情批量导入">
+                                    <i class="iconfont icon-tianjia"></i>&nbsp;批量导入
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table id="LAY-goodsDetails-back-manage" lay-filter="LAY-goodsDetails-back-manage"></table>
+{#                <script id="switchTpl" type="text/html">#}
+{#                    {% verbatim %}#}
+{#                    <input type="checkbox" name="state" value="{{ d.status }}" lay-skin="switch"#}
+{#                           lay-text="启用|停用" lay-filter="switchStatus" {{ d.status== 1 ? 'checked' : '' }}>#}
+{#                    {% endverbatim %}#}
+{#                </script>#}
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'layui/layui.js' %}"></script>
+<script src="{% static 'js/backstage/jquery-1.12.3.min.js' %}"></script>
+<script>
+    //JavaScript代码区域
+
+    layui.use(['element', 'form', 'table', 'laydate', 'layer'], function () {
+        var $ = layui.jquery;
+        var element = layui.element;
+        var form = layui.form;
+        window.table = layui.table;
+        var layer = layui.layer;
+
+        //请求用户表信息，渲染
+        table.render({
+            elem: '#LAY-goodsDetails-back-manage'
+            , url: '{% url 'management:tableData' type='goodsDetails_table' %}'
+            , cellMinWidth: 60 //全局定义常规单元格的最小宽度
+            , page: true
+            , limit: 5
+            , limits: [5, 15, 20]
+            , cols: [[
+                {field: 'goods_code', title: '商品编码', align: 'center'}
+                , {field: 'goods_name', title: '商品名称', align: 'center', event: 'editGoodsDetail', style: 'cursor: pointer;color:#00c2d3'}
+                , {field: 'property', title: '性味', align: 'center'}
+                , {field: 'channels', title: '归经', align: 'center'}
+                , {field: 'actions', title: '功效作用', align: 'center'}
+                , {field: 'usage_dosage', title: '用法用量', align: 'center'}
+                , {field: 'precaution', title: '(预防警告)禁忌', align: 'center'}
+
+            ]]
+        });
+
+        //监听搜索
+        form.on('submit(LAY-goodsDetails-back-search)', function (data) {
+            var field = data.field;
+            console.log(field);
+            //执行重载
+            table.reload('LAY-goodsDetails-back-manage', {
+                where: {
+                    key_words: field.keywords,
+                    goods_code: field.goodscode,
+                },
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
+        });
+
+        //监听单元格事件
+        table.on('tool(LAY-goodsDetails-back-manage)', function (obj) {
+            var data = obj.data;
+            var goodscode = data.goods_code;
+            console.log(goodscode);
+            var url = '{% url 'management:goodsDetailsManage' type='editGoodsDedail' %}' + '?goods_code=' + goodscode;
+            console.log(url);
+            var tab_id = "edit_goodsDetail";
+            var title = "编辑商品详情";
+            {#console.log('url:'+url+'  id:'+tab_id+'  title:'+title+'  data:'+JSON.stringify(data));#}
+            if (obj.event === 'editGoodsDetail') {
+                for (var i = 0; i < parent.length; i++) {
+                    var iframeid = parent[i].frameElement.attributes[0].value;
+                    if (iframeid === 'edit_goodsDetail') {
+                        //商品编辑选项卡已经打开，则只更新数据
+                        parent[i].setValue(data);
+                    } else {
+                        continue;
+                    }
+                }
+                //编辑选项卡未打开，则创建选项卡
+                parent.addTabNew(tab_id, url, title);
+                {#console.log(parent[1].frameElement.attributes[0].value);#}
+                {#console.log(parent[2].frameElement.attributes[0].value);#}
+            }
+        });
+
+
+        $('.nav-active').on('click', function (obj) {
+            var dataid = $(this);
+            var url = dataid.attr("data-url");
+            var tab_id = dataid.attr("data-id");
+            var title = dataid.attr("data-title");
+            console.log('url:' + url + '  id:' + tab_id + '  title:' + title);
+            parent.addTabNew(tab_id, url, title);
+        });
+    })
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>处方详情信息</title>
+    <link rel="stylesheet" href="{% static 'css/backstage/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mall/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'layui/css/layui.css' %}">
+    <link href="{% static 'fonts/backstage/iconfont.css' %}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="padding_10">
+    <div class="layui-tab layui-tab-card" lay-filter="prescription_tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this nav-active" lay-id="presInfo">处方信息</li>
+            <li class="nav-active" lay-id="presImage">处方照片</li>
+            {% if prescri_info.order_id.order_status == 5 %}
+                <li>
+                <div class="layui-inline">
+                    <div class="nav-active layui-input-inline"><button class="layui-btn layuiadmin-btn-admin" style="border-radius: 5px;text-align: center;" data-type="back">
+                        <i class="iconfont icon-fanhui" style="font-size: 20px"></i></button></div>
+                    <div class="nav-active layui-input-inline"><button class="layui-btn layuiadmin-btn-admin" style="background: firebrick;border-radius: 5px;text-align: center;" data-type="giveUp">
+                        <i class="iconfont icon-quxiao1"></i>&nbsp;&nbsp;放弃</button></div>
+                    <div class="nav-active layui-input-inline"><button class="layui-btn layuiadmin-btn-admin" style="background: dodgerblue;border-radius: 5px;text-align: center;" data-type="changeCenter">
+                        <i class="iconfont icon-neirongqiehuan"></i>&nbsp;&nbsp;切换煎煮中心</button></div>
+                    <div class="nav-active layui-input-inline"><button class="layui-btn layuiadmin-btn-admin" style="background: turquoise;border-radius: 5px;text-align: center;" data-type="morning">
+                        <i class="iconfont icon-richu2"></i>&nbsp;&nbsp;早批次</button></div>
+                    <div class="nav-active layui-input-inline"><button class="layui-btn layuiadmin-btn-admin" style="background: orange;border-radius: 5px;text-align: center;" data-type="noon">
+                        <i class="iconfont icon-taiyang2"></i>&nbsp;&nbsp;午批次</button></div>
+                    <div class="nav-active layui-input-inline"><button class="layui-btn layuiadmin-btn-admin" style="background: tomato;border-radius: 5px;text-align: center;" data-type="night">
+                        <i class="iconfont icon-yueliang"></i>&nbsp;&nbsp;晚批次</button></div>
+                </div>
+            </li>
+                {% else %}
+            {% endif %}
+
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-card">
+                    <div class="layui-collapse" lay-accordion="">
+                        <div class="layui-colla-item">
+                        <input type="hidden" name="prescriptionNum" value="{{ prescri_info.prescri_id }}" id="prescriptionNum"/>
+                        <input type="hidden" name="orderNum" value="{{ prescri_info.order_id_id }}" id="orderNum"/>
+                            <h2 class="layui-colla-title">{{ prescri_info.prescri_id }}</h2>
+                            <div class="layui-colla-content layui-show">
+                                <table class="layui-table details_table1" width="100%" border="0" cellpadding="0"
+                                       cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="6" style="text-align: center">处方智能审核结果</th>
+                                    </tr>
+                                    {% for audit_info in auto_audit_result %}
+                                        <tr>
+                                            {% if audit_info == '处方自动审核正常！' %}
+                                                <td colspan="6" style="color: green">{{ audit_info }}</td>
+                                            {% else %}
+                                                <td colspan="6" style="color: red">{{ audit_info }}</td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <th colspan="6" style="text-align: center">患者信息</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="layui-form" lay-filter="prescription">
+                                    <tr>
+                                        <td width="10%">姓名</td>
+                                        <td width="10%">{{ prescri_info.user_name }}</td>
+                                        <td width="10%">年龄</td>
+                                        <td width="10%">{{ prescri_info.age }}</td>
+                                        <td width="10%">性别</td>
+                                        {% if prescri_info.gender == 0 %}
+                                            <td width="10%">女</td>
+                                            {% elif prescri_info.gender == 1 %}
+                                            <td width="10%">男</td>
+                                            {% else %}
+                                            <td width="10%">未知</td>
+                                        {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <td width="10%">孕妇</td>
+                                        {% if prescri_info.is_pregnant == 0 %}
+                                            <td width="10%">否</td>
+                                            {% else %}
+                                            <td width="10%">是</td>
+                                        {% endif %}
+                                        <td width="10%">电话</td>
+                                        <td width="10%">{{ prescri_info.tel }}</td>
+                                        <td width="10%">发票抬头</td>
+                                        <td width="10%"></td>
+                                    </tr>
+                                    <thead>
+                                    <tr>
+                                        <th colspan="6" style="text-align: center">医生信息</th>
+                                    </tr>
+                                    </thead>
+                                    <tr>
+                                        <td width="10%">医生</td>
+                                        <td width="10%">{{ prescri_info.doctor }}</td>
+                                        <td width="10%">电话</td>
+                                        <td width="10%"></td>
+                                        <td width="10%">医院科室</td>
+                                        {% if prescri_info.hos_depart %}
+                                            <td width="10%">{{ prescri_info.hos_depart }}</td>
+                                            {% else %}
+                                            <td width="10%"></td>
+                                        {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <td width="10%">病区号</td>
+                                    {% if prescri_info.disease_code %}
+                                        <td width="10%">{{ prescri_info.disease_code }}</td>
+                                        {% else %}
+                                        <td width="10%"></td>
+                                    {% endif %}
+                                        <td width="10%">床位号</td>
+                                    {% if prescri_info.bed_num %}
+                                        <td width="10%">{{ prescri_info.bed_num }}</td>
+                                        {% else %}
+                                        <td width="10%"></td>
+                                    {% endif %}
+                                        <td width="10%">是否煎煮</td>
+                                        {% if prescri_info.is_suffering == 1 %}
+                                            <td width="10%">是</td>
+                                            {% else %}
+                                            <td width="10%">否</td>
+                                        {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <td width="10%">处方类型</td>
+                                        {% if prescri_info.prescri_type == 0 %}
+                                            <td width="10%">中药</td>
+                                            {% elif prescri_info.prescri_type == 1 %}
+                                            <td width="10%">西药</td>
+                                            {% elif prescri_info.prescri_type == 2 %}
+                                            <td width="10%">膏方</td>
+                                            {% elif prescri_info.prescri_type == 3 %}
+                                            <td width="10%">免煎颗粒</td>
+                                        {% endif %}
+                                        <td width="10%">每剂打包数</td>
+                                        <td width="10%">{{ prescri_info.per_pack_num }}</td>
+                                        <td width="10%">打包剂量</td>
+                                        <td width="10%">{{ prescri_info.per_pack_dose }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10%">备注</td>
+                                        {% if prescri_info.prescript_remark %}
+                                            <td width="10%" colspan="2">{{ prescri_info.prescript_remark }}</td>
+                                            {% else %}
+                                            <td width="10%" colspan="2"></td>
+                                        {% endif %}
+                                        <td width="10%">诊断</td>
+                                    {% if prescri_info.special_instru %}
+                                        <td width="10%" colspan="2">{{ prescri_info.special_instru }}</td>
+                                        {% else %}
+                                        <td width="10%" colspan="2"></td>
+                                    {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <td width="10%">使用方法</td>
+                                        {% if prescri_info.is_within == 0 %}
+                                            <td width="10%" colspan="2">内服</td>
+                                            {% else %}
+                                            <td width="10%" colspan="2">外用</td>
+                                        {% endif %}
+                                        <td width="10%">用药方法</td>
+                                    {% if prescri_info.medication_methods %}
+                                        <td width="10%" colspan="2">{{ prescri_info.medication_methods }}</td>
+                                        {% else %}
+                                        <td width="10%" colspan="2"></td>
+                                    {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <td width="10%">用药指导</td>
+                                        {% if prescri_info.medication_instruction %}
+                                            <td width="10%" colspan="2">{{ prescri_info.medication_instruction }}</td>
+                                            {% else %}
+                                            <td width="10%" colspan="2"></td>
+                                        {% endif %}
+                                        <td width="10%"></td>
+                                        <td width="10%" colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="6" style="text-align: center">药材清单</th>
+                                    </tr>
+                                    <table id="LAY-drugs-back-manage" lay-filter="LAY-drugs-back-manage"></table>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="6">
+                                            <div class="black f16 text-right">药&nbsp;&nbsp;&nbsp;&nbsp;费: <span id="drugsPrice"></span> 元&nbsp;&nbsp;&nbsp;&nbsp;<span id="amountPrice"></span> 元/剂&nbsp;&nbsp;&nbsp;&nbsp;<span id="spanAmount">剂&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数: {{ prescri_info.amount }}</span></div>
+                                            <div class="black f16 text-right">煎煮费:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ suffering_price }} 元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ suffering_unit_price }}  元/袋&nbsp;&nbsp;&nbsp;&nbsp;<span id="spanSufferingNum">代煎袋数: {{ prescri_info.suffering_num }}</span> </div>
+                                            <div class="black f16 text-right">处方金额总计:<strong class="red f18"><span id="orderMoney"></span></strong>元</div>
+                                            <input type="hidden" name="sufferingPrice" id="sufferingPrice" value="{{ suffering_price }}"/>
+                                            <input type="hidden" name="amount" id="amount" value="{{ prescri_info.amount }}"/>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">处方照片</div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'layui/layui.js' %}"></script>
+<script src="{% static 'js/backstage/jquery-1.12.3.min.js' %}"></script>
+<script src="{% static 'js/backstage/decimal.min.js' %}"></script>
+<script>
+    //JavaScript代码区域
+
+    layui.use(['element', 'form', 'table', 'laydate', 'layer'], function () {
+        var $ = layui.jquery;
+        var element = layui.element;
+        var form = layui.form;
+        window.table = layui.table;
+        var layer = layui.layer;
+        var laydate = layui.laydate;
+
+        element.render();
+        var prescri_id = $("#prescriptionNum").val();
+        var order_id = $("#orderNum").val();
+        {#console.log(prescri_id);#}
+
+        //请求处方药材信息，渲染
+        table.render({
+            elem: '#LAY-drugs-back-manage'
+            , url: '{% url 'management:tableData' type='drugs_table' %}' + '?prescri_id=' + prescri_id
+            , page: false
+            , limit: Number.MAX_VALUE // 数据表格默认全部显示
+            , cols: [[
+                {type:'numbers'}
+                ,{field: 'goods_num', title: '机构编码',width:150, align: 'center'}
+                , {field: 'medicines', title: '药品名称',width:150, align: 'center'}
+                , {field: 'dose', title: '剂量',width:90, align: 'center'}
+                , {field: 'unit', title: '单位',width:90, align: 'center'}
+                , {field: 'm_usage', title: '用法',width:100, align: 'center'}
+                , {field: 'remark', title: '备注',width:200, align: 'center'}
+                , {field: 'unit_price', title: '单价', align: 'center',width:120}
+                , {field: 'unit_sum', title: '总计', align: 'center'}
+            ]]
+            ,done: function(res, curr, count){
+                {#console.log(res);#}
+                {#console.log(curr);          //得到当前页码#}
+                {#console.log(count);         //得到数据总量#}
+                var sum = 0;
+                for (var i=0;i<count;i++){
+                    sum += res.data[i].unit_sum;
+                }
+                $("#amountPrice").text(sum.toFixed(2));
+                var drugs_price = sum.toFixed(2)*$("#amount").val();
+                {#console.log(drugs_price);#}
+                $("#drugsPrice").text(drugs_price.toFixed(2));
+                var orderPrice = Number($("#sufferingPrice").val()) + Number(drugs_price.toFixed(2));
+                {#console.log(orderPrice);#}
+                $("#orderMoney").text(orderPrice.toFixed(2));
+            }
+        });
+
+         //事件
+        var active = {
+            back: function () {
+                var tab_id = "order_audit";
+                var url = "{% url 'management:orderAudit' type='home' %}";
+                var title = "订单审核";
+                var close_tab_id = "auditPrescriptionInfo";
+                parent.addTabNew(tab_id,url,title,close_tab_id);
+            }
+            , giveUp: function () {
+                layer.open({
+                    type: 2
+                    , title: '订单放弃原因'
+                    , content: '{% url 'management:orderAudit' type='giveUpOrder' %}'
+                    , area: ["430px", "250px"]
+                    , btn: ["提交", "取消"]
+                    , btnAlign: 'c'
+                    , yes: function (index, layero) {
+                        var body = layer.getChildFrame('body', index); //得到iframe页的body内容
+                        var formdata = {
+                            orderId: order_id,
+                            giveUpReason: body.find("#giveUpReason").val()
+                        };
+                        $.ajax({
+                            url: "{% url 'management:orderAudit' type='giveUpOrder' %}",
+                            data: formdata,
+                            dataType: "TEXT",
+                            type: "POST",
+                            csrfmiddlewaretoken: '{{ csrf_token  }}',
+                            success: function (res) {
+                                var msg = eval("(" + res + ")");        //坑！必须转换成json对象后才能判断status
+                                if (msg.status === 'success') {
+                                    active.back();
+                                }
+                                setTimeout(function () {
+                                    layer.close(index);     //关闭弹层
+                                }, 600);
+                            }
+                        });
+                    }
+                })
+            }
+            ,changeCenter: function () {
+                layer.open({
+                    type: 2
+                    , title: '切换煎煮中心'
+                    , content: '{% url 'management:orderAudit' type='changeCenter' %}'
+                    , area: ["450px", "350px"]
+                    , btn: ["提交", "取消"]
+                    , btnAlign: 'c'
+                    , yes: function (index, layero) {
+                        var body = layer.getChildFrame('body', index); //得到iframe页的body内容
+                        var formdata = {
+                            orderId: order_id,
+                            changeReason: body.find("#changeReason").val(),
+                            storageType:body.find("#storageType").val()
+                        };
+                        {#console.log(formdata);#}
+                        $.ajax({
+                            url: "{% url 'management:orderAudit' type='changeCenter' %}",
+                            data: formdata,
+                            dataType: "TEXT",
+                            type: "POST",
+                            csrfmiddlewaretoken: '{{ csrf_token  }}',
+                            success: function (res) {
+                                var msg = eval("(" + res + ")");        //坑！必须转换成json对象后才能判断status
+                                if (msg.status === 'success') {
+                                    active.back();
+                                }
+                                setTimeout(function () {
+                                    layer.close(index);     //关闭弹层
+                                }, 600);
+                            }
+                        });
+                    }
+                })
+            }
+            ,morning: function () {
+                $.get("{% url 'management:orderAudit' type='auditOrder' %}", {orderId:order_id,batchNum:1}, function (data) {
+                    {#console.log(data);#}
+                    if (data.status === 'success') {
+                        active.back();
+                    }
+                })
+            }
+            ,noon: function () {
+                $.get("{% url 'management:orderAudit' type='auditOrder' %}", {orderId:order_id,batchNum:2}, function (data) {
+                    if (data.status === 'success') {
+                        active.back();
+                    }
+                })
+            }
+            ,night: function () {
+                $.get("{% url 'management:orderAudit' type='auditOrder' %}", {orderId:order_id,batchNum:3}, function (data) {
+                    if (data.status === 'success') {
+                        active.back();
+                    }
+                })
+            }
+        };
+        $('.layui-btn.layuiadmin-btn-admin').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>中药房销售单</title>
+    {#    <link type="text/css" rel="stylesheet" href="../libs/bootstrap.css">#}
+    <link type="text/css" rel="stylesheet" href="{% static 'css/mall/bootstrap.min.css' %}">
+</head>
+<body>
+<div class="container">
+    <div style="width:756px;height:1086px;border:1px solid #000000;">
+        <table border rules=none cellspacing=0 style="width:756px;">
+            {#        <table class="table table-striped table-hover table-bordered">#}
+            <thead>
+            <tr>
+                {% if prescription.is_within == 0 %}
+                    <th colspan="12" style="text-align: center"><h4 style="font-weight: bolder">中药房销售单(内服)</h4></th>
+                {% else %}
+                    <th colspan="12" style="text-align: center"><h4 style="font-weight: bolder">中药房销售单(外用)</h4></th>
+                {% endif %}
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>机&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;构 :</td>
+            {% if prescription.is_hos == 1 %}
+                <td>{{ order.source_id.company_name }} <b>(门诊)</b> </td>
+                {% elif prescription.is_hos == 2 %}
+                <td>{{ order.source_id.company_name }} <b>(住院)</b> </td>
+            {% endif %}
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                {% if order.batch == 1 %}
+                    <td>(早)</td>
+                {% elif order.batch == 2 %}
+                    <td>(午)</td>
+                {% else %}
+                    <td>(晚)</td>
+                {% endif %}
+                {% if prescription.is_suffering == 1 %}
+                    <td>煎</td>
+                {% else %}
+                    <td>饮</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td>订&nbsp;&nbsp;单&nbsp;&nbsp;号 :</td>
+                <td>{{ order.order_id }}</td>
+                <td>处方单号 :</td>
+                <td>{{ prescription.prescri_id }}</td>
+                <td>是否开发票 :</td>
+                <td></td>
+                <td></td>
+                <td colspan="5" rowspan="3"><img id="codeImg1" width="150px" height="80px" src=""/></td>
+            </tr>
+            <tr>
+                <td>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名 :</td>
+                <td><b>{{ prescription.user_name }}</b></td>
+                <td>联系电话 :</td>
+                <td>{{ prescription.tel }}</td>
+                <td>年龄 :</td>
+                <td>{{ prescription.age }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>开单日期 :</td>
+                <td>{{ order.order_time }}</td>
+                <td>送货日期 :</td>
+                {% if order.send_goods_time %}
+                    <td>{{ order.send_goods_time }}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+                <td>性别 :</td>
+                {% if prescription.gender == 0 %}
+                    <td>女</td>
+                {% elif prescription.gender == 1 %}
+                    <td>男</td>
+                {% else %}
+                    <td>未知</td>
+                {% endif %}
+                <td></td>
+            </tr>
+            <tr>
+                <td>收货地址 :</td>
+                <td colspan="11">{{ order.addr_str }}</td>
+            </tr>
+            <tr>
+                <td>用药指导 :</td>
+                <td colspan="11">{{ prescription.medication_instruction }}</td>
+            </tr>
+            <tr>
+                <td>医院备注 :</td>
+                {% if prescription.prescript_remark %}
+                    <td colspan="11">{{ prescription.prescript_remark }}</td>
+                {% else %}
+                    <td colspan="11"></td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td>订单备注 :</td>
+                {% if order.order_remark %}
+                    <td colspan="11">{{ order.order_remark }}</td>
+                {% else %}
+                    <td colspan="11"></td>
+                {% endif %}
+            </tr>
+            </tbody>
+        </table>
+        {#    <table border rules=none cellspacing=0 id="drugs">#}
+        <table border rules=rows cellspacing=0 id="drugs1" style="width: 756px">
+            {#        <table class="table table-striped table-hover table-bordered" id="drugs">#}
+            <tbody>
+            <tr>
+                <td>药品</td>
+                <td></td>
+                <td></td>
+                <td>剂量</td>
+                <td></td>
+                <td></td>
+                <td>小计</td>
+                <td></td>
+                <td></td>
+                <td>用法</td>
+                <td></td>
+                <td></td>
+                <td>药品</td>
+                <td></td>
+                <td></td>
+                <td>剂量</td>
+                <td></td>
+                <td></td>
+                <td>小计</td>
+                <td></td>
+                <td></td>
+                <td>用法</td>
+                <td></td>
+                <td></td>
+                <td>药品</td>
+                <td></td>
+                <td></td>
+                <td>剂量</td>
+                <td></td>
+                <td></td>
+                <td>小计</td>
+                <td></td>
+                <td></td>
+                <td>用法</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    <hr>
+        <table border rules=none cellspacing=0 style="width:756px;">
+            {#        <table class="table table-striped table-hover table-bordered">#}
+            <tbody>
+            <tr>
+                <td>剂&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数 :</td>
+                {% if prescription.is_suffering == 1 %}
+                    <td>{{ prescription.amount }} <b>(代煎)</b> 每剂 {{ prescription.per_pack_num }} 袋</td>
+                {% else %}
+                    <td>{{ prescription.amount }} <b>(饮片)</b></td>
+                {% endif %}
+                <td></td>
+                <td>煎煮数量 :</td>
+                {% if prescription.is_suffering == 1 %}
+                    <td>{{ prescription.amount }} * {{ prescription.per_pack_num }} 共 {{ prescription.suffering_num }}
+                        袋
+                    </td>
+                {% else %}
+                    <td> 0</td>
+                {% endif %}
+                <td></td>
+                <td>调&nbsp;&nbsp;剂&nbsp;&nbsp;员:</td>
+                <td>{{ work_num }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>每剂单价 :</td>
+                <td></td>
+                <td></td>
+                <td>煎煮单价 :</td>
+                <td></td>
+                <td></td>
+                <td>总金额 :</td>
+                <td colspan="5" rowspan="2"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+        <hr>
+    <table border rules=none cellspacing=0 style="width:756px;">
+            {#        <table class="table table-striped table-hover table-bordered">#}
+            <thead>
+            <tr>
+                {% if prescription.is_within == 0 %}
+                    <th colspan="12" style="text-align: center"><h4 style="font-weight: bolder">中药房销售单(内服)</h4></th>
+                {% else %}
+                    <th colspan="12" style="text-align: center"><h4 style="font-weight: bolder">中药房销售单(外用)</h4></th>
+                {% endif %}
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>机&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;构 :</td>
+                {% if prescription.is_hos == 1 %}
+                    <td>{{ order.source_id.company_name }} <b>(门诊)</b> </td>
+                {% elif prescription.is_hos == 2 %}
+                    <td>{{ order.source_id.company_name }} <b>(住院)</b> </td>
+                {% endif %}
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                {% if order.batch == 1 %}
+                    <td>(早)</td>
+                {% elif order.batch == 2 %}
+                    <td>(午)</td>
+                {% else %}
+                    <td>(晚)</td>
+                {% endif %}
+                {% if prescription.is_suffering == 1 %}
+                    <td>煎</td>
+                {% else %}
+                    <td>饮</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td>订&nbsp;&nbsp;单&nbsp;&nbsp;号 :</td>
+                <td>{{ order.order_id }}</td>
+                <td>处方单号 :</td>
+                <td>{{ prescription.prescri_id }}</td>
+                <td>是否开发票 :</td>
+                <td></td>
+                <td></td>
+                <td colspan="5" rowspan="3"><img id="codeImg2" width="150px" height="80px" src=""/></td>
+            </tr>
+            <tr>
+                <td>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名 :</td>
+                <td><b>{{ prescription.user_name }}</b></td>
+                <td>联系电话 :</td>
+                <td>{{ prescription.tel }}</td>
+                <td>年龄 :</td>
+                <td>{{ prescription.age }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>开单日期 :</td>
+                <td>{{ order.order_time }}</td>
+                <td>送货日期 :</td>
+                {% if order.send_goods_time %}
+                    <td>{{ order.send_goods_time }}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+                <td>性别 :</td>
+                {% if prescription.gender == 0 %}
+                    <td>女</td>
+                {% elif prescription.gender == 1 %}
+                    <td>男</td>
+                {% else %}
+                    <td>未知</td>
+                {% endif %}
+                <td></td>
+            </tr>
+            <tr>
+                <td>收货地址 :</td>
+                <td colspan="11">{{ order.addr_str }}</td>
+            </tr>
+            <tr>
+                <td>用药指导 :</td>
+                <td colspan="11">{{ prescription.medication_instruction }}</td>
+            </tr>
+            <tr>
+                <td>医院备注 :</td>
+                {% if prescription.prescript_remark %}
+                    <td colspan="11">{{ prescription.prescript_remark }}</td>
+                {% else %}
+                    <td colspan="11"></td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td>订单备注 :</td>
+                {% if order.order_remark %}
+                    <td colspan="11">{{ order.order_remark }}</td>
+                {% else %}
+                    <td colspan="11"></td>
+                {% endif %}
+            </tr>
+            </tbody>
+        </table>
+        {#    <table border rules=none cellspacing=0 id="drugs">#}
+        <table border rules=rows cellspacing=0 id="drugs2" style="width: 756px">
+            {#        <table class="table table-striped table-hover table-bordered" id="drugs">#}
+            <tbody>
+            <tr>
+                <td>药品</td>
+                <td></td>
+                <td></td>
+                <td>剂量</td>
+                <td></td>
+                <td></td>
+                <td>小计</td>
+                <td></td>
+                <td></td>
+                <td>用法</td>
+                <td></td>
+                <td></td>
+                <td>药品</td>
+                <td></td>
+                <td></td>
+                <td>剂量</td>
+                <td></td>
+                <td></td>
+                <td>小计</td>
+                <td></td>
+                <td></td>
+                <td>用法</td>
+                <td></td>
+                <td></td>
+                <td>药品</td>
+                <td></td>
+                <td></td>
+                <td>剂量</td>
+                <td></td>
+                <td></td>
+                <td>小计</td>
+                <td></td>
+                <td></td>
+                <td>用法</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    <hr>
+        <table border rules=none cellspacing=0 style="width:756px;">
+            {#        <table class="table table-striped table-hover table-bordered">#}
+            <tbody>
+            <tr>
+                <td>剂&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数 :</td>
+                {% if prescription.is_suffering == 1 %}
+                    <td>{{ prescription.amount }} <b>(代煎)</b> 每剂 {{ prescription.per_pack_num }} 袋</td>
+                {% else %}
+                    <td>{{ prescription.amount }} <b>(饮片)</b></td>
+                {% endif %}
+                <td></td>
+                <td>煎煮数量 :</td>
+                {% if prescription.is_suffering == 1 %}
+                    <td>{{ prescription.amount }} * {{ prescription.per_pack_num }} 共 {{ prescription.suffering_num }}
+                        袋
+                    </td>
+                {% else %}
+                    <td> 0</td>
+                {% endif %}
+                <td></td>
+                <td>调&nbsp;&nbsp;剂&nbsp;&nbsp;员:</td>
+                <td>{{ work_num }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>每剂单价 :</td>
+                <td></td>
+                <td></td>
+                <td>煎煮单价 :</td>
+                <td></td>
+                <td></td>
+                <td>总金额 :</td>
+                <td colspan="5" rowspan="2"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <input type="hidden" name="prescriId" id="prescriId" value="{{ prescription.prescri_id }}"/>
+</div>
+<script src="{% static 'js/backstage/jquery-1.12.3.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        changeCode();
+    });
+
+    var prescri_id = $("#prescriId").val();
+    {#console.log(prescri_id);#}
+
+    function changeCode() {
+        $("#codeImg1").attr("src", "{% url 'management:Adjust' type='barcode' %}?prescriId=" + prescri_id);
+        $("#codeImg2").attr("src", "{% url 'management:Adjust' type='barcode' %}?prescriId=" + prescri_id);
+    }
+
+    $.get("{% url 'management:Adjust' type='drugs' %}", {prescriId: prescri_id}, function (data) {
+        {#console.log(data);#}
+        var dt1 = document.getElementById('drugs1');
+        var dt2 = document.getElementById('drugs2');
+        {#console.log(dt1);#}
+        {#console.log(dt2);#}
+        var rows1 = dt1.rows.length;
+        var rows2 = dt2.rows.length;
+        var cells1 = dt1.rows[0].cells.length;
+        var cells2 = dt2.rows[0].cells.length;
+        var drugsCount = data.length;
+        {#console.log(rows1);#}
+        {#console.log(cells1);#}
+        {#console.log(drugsCount);#}
+        {#console.log(dt1.rows[0]);#}
+        {#console.log(dt1.rows[0].cells);#}
+        {#console.log(dt1.rows[0].cells[0]);#}
+        {#console.log(dt1.rows[0].cells[0].innerText);#}
+        if (drugsCount - 9 <= 0) {
+            for (i = 1; i < rows1; i++) {
+                for (j = 0; j < cells1; j++) {
+                    if (j === 0) {
+                        dt1.rows[i].cells[j].innerText = data[i - 1].medicines;
+                        dt2.rows[i].cells[j].innerText = data[i - 1].medicines;
+                    } else if (j === 3) {
+                        dt1.rows[i].cells[j].innerText = data[i - 1].dose + data[i - 1].unit;
+                    } else if (j === 6) {
+                        dt1.rows[i].cells[j].innerText = data[i - 1].dose * data[i - 1].prescri_id__amount + data[i - 1].unit;
+                    } else if (j === 9) {
+                        dt1.rows[i].cells[j].innerText = data[i - 1].m_usage;
+                    } else continue;
+                }
+            }
+        } else if (drugsCount - 9 <= 9) {
+            for (i = 1; i < rows1; i++) {
+                for (j = 0; j < cells1; j++) {
+                    if (j === 0) {
+                        dt1.rows[i].cells[j].innerText = data[i - 1].medicines;
+                    } else if (j === 3) {
+                        dt1.rows[i].cells[j].innerText = data[i - 1].dose + data[i - 1].unit;
+                    } else if (j === 6) {
+                        dt1.rows[i].cells[j].innerText = data[i - 1].dose * data[i - 1].prescri_id__amount + data[i - 1].unit;
+                    } else if (j === 9) {
+                        dt1.rows[i].cells[j].innerText = data[i - 1].m_usage;
+                    } else if (j === 12 && i <= drugsCount - 9) {
+                        dt1.rows[i].cells[j].innerText = data[i + 8].medicines;
+                    } else if (j === 15 && i <= drugsCount - 9) {
+                        dt1.rows[i].cells[j].innerText = data[i + 8].dose + data[i + 8].unit;
+                    } else if (j === 18 && i <= drugsCount - 9) {
+                        dt1.rows[i].cells[j].innerText = data[i + 8].dose * data[i + 8].prescri_id__amount + data[i + 8].unit;
+                    } else if (j === 21 && i <= drugsCount - 9) {
+                        dt1.rows[i].cells[j].innerText = data[i + 8].m_usage;
+                    } else {
+                        continue;
+                    }
+                }
+            }
+        } else {
+            for (i = 1; i < rows1; i++) {
+                for (j = 0; j < cells1; j++) {
+                    if (j === 0) {
+                        dt1.rows[i].cells[j].innerText = data[i - 1].medicines;
+                    } else if (j === 3) {
+                        dt1.rows[i].cells[j].innerText = data[i - 1].dose + data[i - 1].unit;
+                    } else if (j === 6) {
+                        dt1.rows[i].cells[j].innerText = data[i - 1].dose * data[i - 1].prescri_id__amount + data[i - 1].unit;
+                    } else if (j === 9) {
+                        dt1.rows[i].cells[j].innerText = data[i - 1].m_usage;
+                    } else if (j === 12) {
+                        dt1.rows[i].cells[j].innerText = data[i + 8].medicines;
+                    } else if (j === 15) {
+                        dt1.rows[i].cells[j].innerText = data[i + 8].dose + data[i + 8].unit;
+                    } else if (j === 18) {
+                        dt1.rows[i].cells[j].innerText = data[i + 8].dose * data[i + 8].prescri_id__amount + data[i + 8].unit;
+                    } else if (j === 21) {
+                        dt1.rows[i].cells[j].innerText = data[i + 8].m_usage;
+                    } else if (j === 24 && i <= drugsCount - 18) {
+                        dt1.rows[i].cells[j].innerText = data[i + 17].medicines;
+                    } else if (j === 27 && i <= drugsCount - 18) {
+                        dt1.rows[i].cells[j].innerText = data[i + 17].dose + data[i + 17].unit;
+                    } else if (j === 30 && i <= drugsCount - 18) {
+                        dt1.rows[i].cells[j].innerText = data[i + 17].dose * data[i + 17].prescri_id__amount + data[i + 17].unit;
+                    } else if (j === 33 && i <= drugsCount - 18) {
+                        dt1.rows[i].cells[j].innerText = data[i + 17].m_usage;
+                    } else continue;
+                }
+            }
+        }
+        if (drugsCount - 9 <= 0) {
+            for (i = 1; i < rows2; i++) {
+                for (j = 0; j < cells2; j++) {
+                    if (j === 0) {
+                        dt2.rows[i].cells[j].innerText = data[i - 1].medicines;
+                    } else if (j === 3) {
+                        dt2.rows[i].cells[j].innerText = data[i - 1].dose + data[i - 1].unit;
+                    } else if (j === 6) {
+                        dt2.rows[i].cells[j].innerText = data[i - 1].dose * data[i - 1].prescri_id__amount + data[i - 1].unit;
+                    } else if (j === 9) {
+                        dt2.rows[i].cells[j].innerText = data[i - 1].m_usage;
+                    } else break;
+                }
+            }
+        } else if (drugsCount - 9 <= 9) {
+            for (i = 1; i < rows2; i++) {
+                for (j = 0; j < cells2; j++) {
+                    if (j === 0) {
+                        dt2.rows[i].cells[j].innerText = data[i - 1].medicines;
+                    } else if (j === 3) {
+                        dt2.rows[i].cells[j].innerText = data[i - 1].dose + data[i - 1].unit;
+                    } else if (j === 6) {
+                        dt2.rows[i].cells[j].innerText = data[i - 1].dose * data[i - 1].prescri_id__amount + data[i - 1].unit;
+                    } else if (j === 9) {
+                        dt2.rows[i].cells[j].innerText = data[i - 1].m_usage;
+                    } else if (j === 12 && i <= drugsCount - 9) {
+                        dt2.rows[i].cells[j].innerText = data[i + 8].medicines;
+                    } else if (j === 15 && i <= drugsCount - 9) {
+                        dt2.rows[i].cells[j].innerText = data[i + 8].dose + data[i + 8].unit;
+                    } else if (j === 18 && i <= drugsCount - 9) {
+                        dt2.rows[i].cells[j].innerText = data[i + 8].dose * data[i + 8].prescri_id__amount + data[i + 8].unit;
+                    } else if (j === 21 && i <= drugsCount - 9) {
+                        dt2.rows[i].cells[j].innerText = data[i + 8].m_usage;
+                    } else {
+                        continue;
+                    }
+                }
+            }
+        } else {
+            for (i = 1; i < rows2; i++) {
+                for (j = 0; j < cells2; j++) {
+                    if (j === 0) {
+                        dt2.rows[i].cells[j].innerText = data[i - 1].medicines;
+                    } else if (j === 3) {
+                        dt2.rows[i].cells[j].innerText = data[i - 1].dose + data[i - 1].unit;
+                    } else if (j === 6) {
+                        dt2.rows[i].cells[j].innerText = data[i - 1].dose * data[i - 1].prescri_id__amount + data[i - 1].unit;
+                    } else if (j === 9) {
+                        dt2.rows[i].cells[j].innerText = data[i - 1].m_usage;
+                    } else if (j === 12) {
+                        dt2.rows[i].cells[j].innerText = data[i + 8].medicines;
+                    } else if (j === 15) {
+                        dt2.rows[i].cells[j].innerText = data[i + 8].dose + data[i + 8].unit;
+                    } else if (j === 18) {
+                        dt2.rows[i].cells[j].innerText = data[i + 8].dose * data[i + 8].prescri_id__amount + data[i + 8].unit;
+                    } else if (j === 21) {
+                        dt2.rows[i].cells[j].innerText = data[i + 8].m_usage;
+                    } else if (j === 24 && i <= drugsCount - 18) {
+                        dt2.rows[i].cells[j].innerText = data[i + 17].medicines;
+                    } else if (j === 27 && i <= drugsCount - 18) {
+                        dt2.rows[i].cells[j].innerText = data[i + 17].dose + data[i + 17].unit;
+                    } else if (j === 30 && i <= drugsCount - 18) {
+                        dt2.rows[i].cells[j].innerText = data[i + 17].dose * data[i + 17].prescri_id__amount + data[i + 17].unit;
+                    } else if (j === 33 && i <= drugsCount - 18) {
+                        dt2.rows[i].cells[j].innerText = data[i + 17].m_usage;
+                    } else continue;
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

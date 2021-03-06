@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>添加商品</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="{% static 'layui/css/layui.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'css/backstage/style.css' %}">
+    <link href="{% static 'fonts/backstage/iconfont.css' %}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+<table class="layui-table details_table1" width="100%" border="0" cellpadding="0" cellspacing="0"
+       data-table="add_goods" id="goods">
+    <thead>
+    <tr>
+        <th colspan="6">添加商品</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td width="10%">商品编码&nbsp;<span class="red">*</span></td>
+        <td width="10%"><input type="text" class="table_input" name="goodscode" id="goodscode"></td>
+        <td width="10%">商品名称&nbsp;<span class="red">*</span></td>
+        <td width="10%"><input type="text" name="goodsname" id="goodsname" class="table_input"></td>
+        <td width="10%"></td>
+        <td width="10%"></td>
+    </tr>
+    <tr>
+        <td width="10%">英文名称&nbsp;<span class="red">*</span></td>
+        <td width="10%"><input type="text" name="englishname" id="englishname" class="table_input"></td>
+        <td width="10%">中文名称&nbsp;<span class="red">*</span></td>
+        <td width="10%"><input type="text" name="chinesename" id="chinesename" class="table_input"></td>
+        <td width="10%"></td>
+        <td width="10%"></td>
+    </tr>
+    <tr>
+        <td width="10%">单位&nbsp;<span class="red">*</span></td>
+        <td width="10%"><input type="text" name="unit" id="unit" class="table_input"></td>
+        <td width="10%">简码&nbsp;<span class="red">*</span></td>
+        <td width="10%"><input type="text" name="shortcode" id="shortcode" class="table_input"></td>
+        <td width="10%">价格&nbsp;<span class="red">*</span></td>
+        <td width="10%"><input type="text" name="price" id="price" class="table_input"></td>
+    </tr>
+    <tr>
+        <td width="10%">别名1</td>
+        <td width="10%"><input type="text" name="alias1" id="alias1" class="table_input"><i onclick="aliasPlus();"
+                                                                                            class="iconfont icon-tianjia"></i>
+        </td>
+        <td colspan="4"></td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="6">
+            <button class="layui-btn layuiadmin-btn-admin" lay-submit lay-filter="LAY-goods-back-save">保存</button>
+            <button class="layui-btn layuiadmin-btn-admin" lay-submit lay-filter="LAY-generate_goods_code">生成编码</button>
+        </td>
+    </tr>
+    </tfoot>
+</table>
+
+<script src="{% static 'layui/layui.js' %}"></script>
+<script src="{% static 'js/backstage/jquery-1.12.3.min.js' %}"></script>
+<script>
+
+    function aliasPlus() {
+        console.log('点到了');
+        var lerLength = $('[data-table=add_goods] > tbody > tr').length - 2;
+        if (lerLength > 10) {
+            layer.msg("最多只能输入10个别名");
+            return false;
+        }
+        var html = '';
+        html += '<tr>';
+        html += '<td width="10%" data-table="add_alias">别名</td>';
+        html += '<td width="10%"><input type="text" data-table="add_lod" class="table_input" id="alias" name="alias"><i onclick="aliasMinus();" class="iconfont icon-jian2"></i></td>';
+        html += '</tr>';
+        $('[data-table=add_goods]').append(html);
+        $('[data-table=add_alias]').each(function (i, data) {
+            $(this).html('别名' + (i + 2));
+        });
+        $('[data-table=add_lod]').each(function (i, data) {
+            $(this).attr("name", "alias" + (i + 2));
+            $(this).attr("id", "alias" + (i + 2));
+        })
+    };
+
+    function aliasMinus() {
+        $('[data-table=add_goods] > tbody > tr:last-of-type').remove();
+    };
+
+    //去掉字符串中的特殊字符
+    var excludeSpecial = function (s) {
+        s = s.replace(/[\'\"\\\b\f\n\r\t]/g, '');               // 去掉转义字符
+        s = s.replace(/[\@\#\$\%\^\&\{\}\:\"\<\>\?]/, '');       // 去掉特殊字符
+        s = s.replace(/\s/g, '');                                // 去空格
+        return s;
+    };
+
+    //延时
+    var sleep = function (time) {
+        var startTime = new Date().getTime() + parseInt(time, 10);
+        while (new Date().getTime() < startTime) {
+        }
+    };
+
+
+    //重置
+    var reset=function(){
+        $("#goodscode").val('');
+        $("#goodsname").val('');
+        $("#englishname").val('');
+        $("#chinesename").val('');
+        $("#unit").val('');
+        $("#price").val('');
+        $("#shortcode").val('');
+        $("#alias1").val('');
+        $("#alias2").val('');
+        $("#alias3").val('');
+        $("#alias4").val('');
+        $("#alias5").val('');
+    }
+
+
+    //获取商品别名
+    function getAlias() {
+        var lastAlias = $("#goods").find('tbody').find('tr:last').find('td').eq(1).find('input').attr('id');
+        {#console.log(lastAlias);#}
+        var endIndex = parseInt(lastAlias.replace(/[^0-9]/ig, ""));
+        {#console.log(endIndex);#}
+        {#console.log(typeof endIndex);#}
+        var obj = {};
+        for (endIndex; endIndex > 0; endIndex--) {
+            var key = 'alias' + endIndex;
+            var value = $("#" + key).val();
+            obj[key] = value;
+        }
+        {#console.log(obj);#}
+        return obj;
+    }
+
+    layui.use(['form', 'table', 'layer'], function () {
+        var $ = layui.jquery;
+        var form = layui.form;
+        var table = layui.table;
+        window.layer = layui.layer;
+
+        //监听保存
+        form.on('submit(LAY-goods-back-save)', function (data) {
+            var goodsCode = excludeSpecial($("#goodscode").val());
+            if (goodsCode.length == 0) {
+                layer.msg("请输入商品编码!");
+                $("#goodscode").focus();
+                return false;
+            } else {
+                $("#goodscode").val(goodsCode)
+            }
+
+            {#var goodsName=excludeSpecial($("#goodsname").val());#}
+            var goodsName = $("#goodsname").val();
+            if (goodsName.length == 0) {
+                layer.msg("请输入商品名称!");
+                $("#goodsname").focus();
+
+                return false;
+            } else {
+                $("#goodsname").val(goodsName)
+            }
+
+            {#var englishName=excludeSpecial($("#englishname").val());#}
+            var englishName = $("#englishname").val();
+            if (englishName.length == 0) {
+                layer.msg("请输入商品英文名!");
+                $("#englishname").focus();
+                return false;
+            } else {
+                $("#englishname").val(englishName)
+            }
+
+            var chineseName = excludeSpecial($("#chinesename").val());
+            if (chineseName.length == 0) {
+                layer.msg("请输入商品中文名!");
+                $("#chinesename").focus();
+                return false;
+            } else {
+                $("#chinesename").val(chineseName)
+            }
+
+            var unit = excludeSpecial($("#unit").val());
+            if (unit.length == 0) {
+                layer.msg("请输入商品单位!");
+                $("#unit").focus();
+                return false;
+            } else {
+                $("#unit").val(unit)
+            }
+
+            var unitPrice = excludeSpecial($("#price").val());
+            if (unitPrice.length == 0) {
+                layer.msg("请输入商品单价!");
+                $("#price").focus();
+                return false;
+            } else {
+                $("#price").val(unitPrice)
+            }
+
+            var shortCode = excludeSpecial($("#shortcode").val());
+            if (shortCode.length == 0) {
+                layer.msg("请输入商品简码!");
+                $("#shortcode").focus();
+                return false;
+            } else {
+                $("#shortcode").val(shortCode)
+            }
+            var goodsdata = {
+                goodsCode: goodsCode, goodsName: goodsName, englishName: englishName, chineseName: chineseName,
+                unit: unit, shortCode: shortCode, price: unitPrice, alias: JSON.stringify(getAlias())
+            }
+            console.log(goodsdata);
+            $.ajax({
+                url: "{% url 'management:goodsManage' type='addGoods' %}",
+                {#data: JSON.stringify(goodsdata),#}
+                data: goodsdata,
+                dataType: "TEXT",
+                type: "POST",
+                csrfmiddlewaretoken: '{{ csrf_token  }}',
+                success: function (res) {
+                    var msg = eval("(" + res + ")");        //坑！必须转换成json对象后才能判断status
+                    if (msg.status === 'success') {
+                        layer.msg('商品添加成功');
+                    } else {
+                        layer.msg(msg.message);
+                    }
+                    reset();
+                }
+            });
+        });
+
+    });
+
+
+</script>
+</body>
+</html>

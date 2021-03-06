@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>处方查询列表</title>
+    <link rel="stylesheet" href="{% static 'css/backstage/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mall/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'layui/css/layui.css' %}">
+    <link href="{% static 'fonts/backstage/iconfont.css' %}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="padding_10">
+    <div class="head-title clearfix">
+        <h1>处方查询列表</h1>
+    </div>
+    <div class="layui-row">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div class="form-box">
+                    <div class="layui-form layui-form-item">
+                        <div class="layui-inline">
+                            <div class="layui-form-mid">开始时间:</div>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input test-laydate-item" name="startDate" id="startDate">
+                            </div>
+                            <div class="layui-form-mid">结束时间</div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="endDate" id="endDate" class="layui-input test-laydate-item">
+                            </div>
+                            <div class="layui-form-mid">机构:</div>
+                            <div class="layui-input-inline" style="width: 300px">
+                                <select name="sourceId" id="sourceId">
+                                    <option value="">请选择</option>
+                                </select>
+                            </div>
+                             <div class="layui-form-mid">煎煮中心:</div>
+                            <div class="layui-input-inline" style="width: 160px">
+                                <select name="storageType" id="storageType">
+                                    <option value="">请选择</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-form-mid">处方类型:</div>
+                            <div class="layui-input-inline" style="width: 160px">
+                                <select name="prescrType" id="prescrType">
+                                    <option value="">全部</option>
+                                    <option value='0' >中药</option>
+                                    <option value='1' >西药</option>
+                                    <option value='2' >膏方</option>
+                                    <option value='3' >免煎颗粒</option>
+                                </select>
+                            </div>
+                            <div class="layui-form-mid">门诊住院:</div>
+                            <div class="layui-input-inline" style="width: 160px">
+                                <select name="isHos" id="isHos">
+                                    <option value="" >默认</option>
+                                    <option value="1" >门诊</option>
+                                    <option value="2" >住院</option>
+                                </select>
+                            </div>
+                            <div class="layui-form-mid">状态:</div>
+                            <div class="layui-input-inline" style="width: 160px">
+                                <select name="orderStatus" id="orderStatus">
+                                    <option value="">全部</option>
+                                    <option value='0' >录入中</option>
+                                    <option value='5' >审核中</option>
+                                    <option value='10' >用户确认中</option>
+                                    <option value='15' >调剂中</option>
+                                    <option value='17' >备药完成</option>
+                                    <option value='18' >打包完成</option>
+                                    <option value='20' >物流分拨</option>
+                                    <option value='25' >派送完毕</option>
+                                    <option value='97' >用户拒收</option>
+                                    <option value='98' >审核失败</option>
+                                    <option value='99' >用户放弃</option>
+                                </select>
+                            </div>
+
+                             <div class="layui-form-mid">是否送医院:</div>
+                            <div class="layui-input-inline" style="width: 160px">
+                                <select name="isHosAddr" id="isHosAddr">
+                                    <option value='' selected> 全部</option>
+									<option value="0" >否</option>
+									<option value="1" >是</option>
+                                </select>
+                            </div>
+                            <div class="layui-form-mid">收货人:</div>
+                            <div class="layui-input-inline" style="width: 120px">
+                                <input type="text" name="consignee" id="consignee" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-form-mid">客户姓名:</div>
+                            <div class="layui-input-inline" style="width: 120px">
+                                <input type="text" name="userName" id="userName" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid">医生姓名:</div>
+                            <div class="layui-input-inline" style="width: 120px">
+                                <input type="text" name="doctorName" id="doctorName" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid">处方号:</div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="prescriId" id="prescriId" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid">机构处方号:</div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="otherPresNum" id="otherPresNum" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn layuiadmin-btn-admin" lay-submit
+                                        lay-filter="LAY-order-back-search">
+                                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                                </button>
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn layuiadmin-btn-admin nav-active"
+                                        data-url="" data-id="batchImport"
+                                        data-title="批量导入">
+                                    <i class="iconfont icon-tianjia"></i>&nbsp;预留
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table id="LAY-order-back-manage" lay-filter="LAY-order-back-manage"></table>
+                {% verbatim %}
+                <script id="presTypeTpl" type="text/html">
+                    {{ d.prescri_type == 0 ? '中药': d.prescri_type == 1 ? '西药' : d.prescri_type == 2 ? '膏方' :
+                    d.prescri_type == 3 ? '免煎颗粒' : ''}}
+                </script>
+                <script id="isSufferTpl" type="text/html">
+                    {{ d.is_suffering == 0 ? '非煎煮' : '<span style="color: red;">煎煮</span>'}}
+                </script>
+                <script id="isHosAddrTpl" type="text/html">
+                    {{ d.is_hos_addr == 0 ? '否' : '是'}}
+                </script>
+                <script id="orderStatusTpl" type="text/html">
+                    {{d.order_status == 0 ? '<span style="color: lightseagreen;">录入中</span>':
+                    d.order_status == 5 ? '<span style="color: blue;">审核中</span>' :
+                    d.order_status == 10 ? '<span style="color: green;">用户确认中</span>':
+                    d.order_status == 15 ? '<span style="color: orange;">调剂中</span>':
+                    d.order_status == 17 ? '<span style="color: turquoise;">备药完成</span>':
+                    d.order_status == 18 ? '<span style="color: coral;">打包完成</span>':
+                    d.order_status == 20 ? '<span style="color: royalblue;">物流分拨</span>':
+                    d.order_status == 25 ? '<span style="color: black;">派送完毕</span>':
+                    d.order_status == 97 ? '<span style="color: red;">用户拒收</span>':
+                    d.order_status == 98 ? '<span style="color: firebrick;">审核失败</span>':
+                    d.order_status == 99 ? '<span style="color: tomato;">用户放弃</span>':
+                    ''}}
+                </script>
+                <script id="prescriptionStatusTpl" type="text/html">
+                    {{ d.order_status == 98 ? '<span style="color: red;">无效</span>' : ''}}
+                </script>
+                {% endverbatim %}
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'layui/layui.js' %}"></script>
+<script src="{% static 'js/backstage/jquery-1.12.3.min.js' %}"></script>
+<script>
+    //JavaScript代码区域
+
+    layui.use(['element', 'form', 'table', 'laydate', 'layer'], function () {
+        var $ = layui.jquery;
+        var element = layui.element;
+        var form = layui.form;
+        window.table = layui.table;
+        var layer = layui.layer;
+        var laydate = layui.laydate;
+
+        //请求后台煎煮中心信息，渲染select
+        $.get("{% url 'management:companyManage' type='storagetype' %}", {}, function (data) {
+            var list = JSON.parse(data);
+            if (list != null || list.size() > 0) {
+                for (var i = 0; i < list.length; i++) {
+                    $("#storageType").append("<option value=" + list[i].pk + ">" + list[i].fields.name + "</option>");
+                }
+            }
+            form.render('select');
+        });
+
+        //请求后台机构信息，渲染select
+        $.get("{% url 'management:prescriptionQuery' type='sourceId' %}", {}, function (data) {
+            var list = JSON.parse(data);
+            if (list != null || list.size() > 0) {
+                for (var i = 0; i < list.length; i++) {
+                    $("#sourceId").append("<option value=" + list[i].pk + ">" + list[i].fields.company_name + "</option>");
+                }
+            }
+            form.render('select');
+        });
+
+        //时间段
+        lay('.test-laydate-item').each(function () {
+            laydate.render({
+                elem: this
+                , trigger: 'click'
+                , type: 'datetime'
+            });
+        });
+
+        //请求用户表信息，渲染
+        table.render({
+            elem: '#LAY-order-back-manage'
+            , url: '{% url 'management:tableData' type='order_table' %}'
+            , page: true
+            {#,height: 'full-100'#}
+            , limit: 10
+            , limits: [10, 15, 20]
+            , cols: [[
+                {field: 'other_pres_num', title: '机构处方号',width:150, align: 'center'}
+                , {
+                    field: 'prescri_id', title: '处方号',width:150, align: 'center', event: 'pdDetail'
+                    , style: 'cursor: pointer;color:#00c2d3'
+                }
+                , {field: 'prescri_type', title: '处方类型',width:90, align: 'center',templet: '#presTypeTpl'}
+                , {field: 'is_suffering', title: '是否煎煮',width:90, align: 'center',templet: '#isSufferTpl'}
+                , {field: 'user_name', title: '客户姓名',width:90, align: 'center'}
+                , {field: 'doctor', title: '医生姓名',width:90, align: 'center'}
+                , {field: 'consignee', title: '收货人', align: 'center',width:80}
+                , {field: 'con_tel', title: '收货人电话', align: 'center',width:130}
+                , {field: 'addr_str', title: '收货地址',width:200, align: 'center'}
+                , {field: 'source_id', title: '机构', align: 'center',width:230}
+                , {field: 'order_time', title: '开单时间',width:160, align: 'center'}
+                , {field: 'send_goods_time', title: '送货时间',width:160, align: 'center'}
+                , {field: 'order_remark', title: '订单备注',width:180, align: 'center'}
+                , {field: 'order_status', title: '订单状态',width:90, align: 'center',templet:'#orderStatusTpl'}
+                , {field: 'prescription_status', title: '处方状态',width:90, align: 'center',templet:'#prescriptionStatusTpl'}
+                , {field: 'is_hos_addr', title: '送医院',width:80,align: 'center',templet:'#isHosAddrTpl'}
+                , {field: 'storage_type', title: '仓库', align: 'center', width:120}
+            ]]
+        });
+
+        //监听搜索
+        form.on('submit(LAY-order-back-search)', function (data) {
+            var field = data.field;
+            {#console.log(field);#}
+            //执行重载
+            table.reload('LAY-order-back-manage', {
+                where: {
+                    consignee: field.consignee,
+                    doctorName: field.doctorName,
+                    startDate: field.startDate,
+                    endDate: field.endDate,
+                    isHos:field.isHos,
+                    isHosAddr:field.isHosAddr,
+                    orderStatus:field.orderStatus,
+                    otherPresNum:field.otherPresNum,
+                    prescrType:field.prescrType,
+                    prescriId:field.prescriId,
+                    sourceId:field.sourceId,
+                    storageType:field.storageType,
+                    userName:field.userName,
+                },
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
+        });
+
+        //监听单元格事件
+        table.on('tool(LAY-order-back-manage)', function (obj) {
+            var data = obj.data;
+            var prescri_id = data.prescri_id;
+            {#console.log(prescri_id);#}
+            var url = '{% url 'management:prescriptionQuery' type='pdDetail' %}' + '?prescri_id=' + prescri_id;
+            {#console.log(url);#}
+            var tab_id = "pdDetail";
+            var title = "处方详情";
+            {#console.log('url:'+url+'  id:'+tab_id+'  title:'+title+'  data:'+JSON.stringify(data));#}
+            if (obj.event === 'pdDetail') {
+                parent.addTabNew(tab_id, url, title);
+            }
+        });
+    })
+
+
+</script>
+</body>
+</html>

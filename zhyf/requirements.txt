@@ -1,0 +1,8 @@
+pdfkit==0.6.1
+PyMySQL==1.0.2
+Django==3.1.5
+lxml==4.6.2
+spyne==2.13.16
+pandas==1.2.1
+barcode_generator==0.1rc15
+Pillow==8.1.1

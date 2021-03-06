@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单审核列表管理</title>
+    <link rel="stylesheet" href="{% static 'css/backstage/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mall/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'layui/css/layui.css' %}">
+    <link href="{% static 'fonts/backstage/iconfont.css' %}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="padding_10">
+    <div class="layui-row">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div class="form-box">
+                    <div class="layui-form layui-form-item">
+                        <div class="layui-inline">
+                            <div class="layui-form-mid">机构:</div>
+                            <div class="layui-input-inline" style="width: 300px">
+                                <select name="sourceId" id="sourceId">
+                                    <option value="">请选择</option>
+                                </select>
+                            </div>
+                            <div class="layui-form-mid">客户姓名:</div>
+                            <div class="layui-input-inline" style="width: 120px">
+                                <input type="text" name="userName" id="userName" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid">机构处方号:</div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="otherPresNum" id="otherPresNum" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid">处方类型:</div>
+                            <div class="layui-input-inline" style="width: 160px">
+                                <select name="prescrType" id="prescrType">
+                                    <option value="">全部</option>
+                                    <option value='0' >中药</option>
+                                    <option value='1' >西药</option>
+                                    <option value='2' >膏方</option>
+                                    <option value='3' >免煎颗粒</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-form-mid">门诊住院:</div>
+                            <div class="layui-input-inline" style="width: 160px">
+                                <select name="isHos" id="isHos">
+                                    <option value="" >默认</option>
+                                    <option value="1" >门诊</option>
+                                    <option value="2" >住院</option>
+                                </select>
+                            </div>
+                            <div class="layui-form-mid">审核类型:</div>
+                            <div class="layui-input-inline" style="width: 160px">
+                                <select name="auditType" id="auditType">
+                                    <option value="">全部</option>
+                                    <option value='0' >待审核</option>
+                                    <option value='1' >已审核</option>
+                                </select>
+                            </div>
+                            <div class="layui-form-mid">是否送医院:</div>
+                            <div class="layui-input-inline" style="width: 160px">
+                                <select name="isHosAddr" id="isHosAddr">
+                                    <option value='' selected> 全部</option>
+									<option value="0" >否</option>
+									<option value="1" >是</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-inline">
+                                <button class="layui-btn layuiadmin-btn-admin" lay-submit
+                                        lay-filter="LAY-order-back-search">
+                                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table id="LAY-orderAudit-back-manage" lay-filter="LAY-orderAudit-back-manage"></table>
+                {% verbatim %}
+                <script type="text/html" id="table-orderAudit">
+                    {{#  if(d.order_remark){ }}
+                    <span style="color: green;">{{d.order_remark}}</span>
+                    {{#  } else { }}
+                    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="addRemark" style="text-decoration: none">
+                        <i class="iconfont icon-tianjia"></i>添加备注</a>
+                    {{#  } }}
+                </script>
+                <script id="isSufferTpl" type="text/html">
+                    {{ d.is_suffering == 0 ? '饮片' : '<span style="color: red;">煎煮</span>'}}
+                </script>
+                <script id="isHosAddrTpl" type="text/html">
+                    {{ d.is_hos_addr == 0 ? '否' : '是'}}
+                </script>
+                {% endverbatim %}
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'layui/layui.js' %}"></script>
+<script src="{% static 'js/backstage/jquery-1.12.3.min.js' %}"></script>
+<script>
+    //JavaScript代码区域
+
+    layui.use(['element', 'form', 'table', 'laydate', 'layer'], function () {
+        var $ = layui.jquery;
+        var element = layui.element;
+        var form = layui.form;
+        window.table = layui.table;
+        var layer = layui.layer;
+
+        //请求后台机构信息，渲染select
+        $.get("{% url 'management:prescriptionQuery' type='sourceId' %}", {}, function (data) {
+            var list = JSON.parse(data);
+            if (list != null || list.size() > 0) {
+                for (var i = 0; i < list.length; i++) {
+                    $("#sourceId").append("<option value=" + list[i].pk + ">" + list[i].fields.company_name + "</option>");
+                }
+            }
+            form.render('select');
+        });
+
+
+        //请求用户表信息，渲染
+        table.render({
+            elem: '#LAY-orderAudit-back-manage'
+            , url: '{% url 'management:tableData' type='orderAudit_table' %}'
+            , page: true
+            {#,height: 'full-100'#}
+            , limit: 10
+            , limits: [10, 15, 20]
+            , cols: [[
+                {field: 'order_id', title: '订单号',width:150, align: 'center', event: 'auditPrescriptionInfo'
+                    , style: 'cursor: pointer;color:#00c2d3'
+                }
+                , {field: 'addr_str', title: '收货地址',width:200, align: 'center'}
+                , {field: 'source_id', title: '订单来源', align: 'center',width:230}
+                , {field: 'user_name', title: '客户姓名',width:90, align: 'center'}
+                , {field: 'order_time', title: '开单时间',width:160, align: 'center'}
+                , {field: 'send_goods_time', title: '送货时间',width:160, align: 'center'}
+                , {field: 'prescri_id', title: '处方号',width:150, align: 'center'}
+                , {field: 'is_suffering', title: '是否煎煮',width:90, align: 'center',templet: '#isSufferTpl'}
+                , {field: 'is_hos_addr', title: '送医院',width:80,align: 'center',templet:'#isHosAddrTpl'}
+                , {fixed: 'right', title: '备注', align: 'center',width:180, toolbar: '#table-orderAudit'}
+            ]]
+        });
+
+        //监听搜索
+        form.on('submit(LAY-order-back-search)', function (data) {
+            var field = data.field;
+            {#console.log(field);#}
+            //执行重载
+            table.reload('LAY-orderAudit-back-manage', {
+                where: {
+                    isHos:field.isHos,
+                    isHosAddr:field.isHosAddr,
+                    auditType:field.auditType,
+                    otherPresNum:field.otherPresNum,
+                    prescrType:field.prescrType,
+                    sourceId:field.sourceId,
+                    userName:field.userName,
+                },
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
+        });
+
+        //监听单元格事件
+        table.on('tool(LAY-orderAudit-back-manage)', function (obj) {
+            var data = obj.data;
+            {#console.log(data);#}
+            var orderId = data.order_id;
+            var prescriId = data.prescri_id;
+            var url = '{% url 'management:orderAudit' type='auditPrescriptionInfo' %}' + '?prescri_id=' + prescriId;
+            var tab_id = "auditPrescriptionInfo";
+            var title = "审核处方信息";
+            {#console.log('url:'+url+'  id:'+tab_id+'  title:'+title+'  data:'+JSON.stringify(data));#}
+            if (obj.event === 'auditPrescriptionInfo') {
+                parent.addTabNew(tab_id, url, title);
+            }
+            if (obj.event === 'addRemark'){
+                layer.open({
+                    type: 2
+                    , title: '订单添加备注'
+                    , content: '{% url 'management:orderAudit' type='addRemark' %}' + '?orderId=' + orderId
+                    , area: ["420px", "300px"]
+                    , btn: ["提交", "取消"]
+                    , btnAlign: 'c'
+                    , yes: function (index, layero) {
+                        var body = layer.getChildFrame('body', index); //得到iframe页的body内容
+                        var formdata = {
+                            orderId: orderId,
+                            remark: body.find("#orderRemark").val()
+                        };
+                        $.ajax({
+                            url: "{% url 'management:orderAudit' type='addRemark' %}",
+                            data: formdata,
+                            dataType: "TEXT",
+                            type: "POST",
+                            csrfmiddlewaretoken: '{{ csrf_token  }}',
+                            success: function (res) {
+                                var msg = eval("(" + res + ")");        //坑！必须转换成json对象后才能判断status
+                                if (msg.status === 'success') {
+                                    table.reload('LAY-orderAudit-back-manage'); //数据刷新，静态更新表格中的数据
+                                    alert("订单: 【" + formdata['orderId'] + "】备注信息添加成功！")
+                                } else {
+                                    alert("订单: 【" + formdata['orderId'] + "】备注信息添加失败！\n原因：" + msg.message)
+                                }
+                                setTimeout(function () {
+                                    layer.close(index);     //关闭弹层
+                                }, 600);
+                            }
+                        });
+                    }
+                })
+            }
+        });
+
+    })
+
+
+</script>
+</body>
+</html>
